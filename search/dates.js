@@ -1,20 +1,38 @@
 const client = require("../clients/biositeClient");
-const JSDOM = require("jsdom").JSDOM;
+const { parse } = require("node-html-parser");
+const { nextDates, nextWeek } = require("../constants");
+const { applySimpleMarkdown } = require("../parser");
 
-let html = undefined;
-let body = undefined;
+let dates = undefined;
 
 const initializeDom = async () => {
   const { data } = await client.get("/FEBA");
-  html = data;
-  body = new JSDOM(html, { runScripts: "dangerously" }).window.document;
-  console.log(body)
+  const dom = parse(data, { blockTextElements: { script: true } });
+  const partialDates = dom.getElementsByTagName("script")[0].childNodes[0].text;
+  dates = JSON.parse(
+    partialDates.substring(
+      partialDates.indexOf("{"),
+      partialDates.lastIndexOf("}") + 1
+    )
+  ).body[1].section.links;
 };
 
-const searchNextDates = async (nextWeek) => {
-  const { data } = await client.get("/FEBA");
-  console.log(data);
-  return "";
+const searchNextDates = (nextWeek) => {
+  if (!nextWeek) {
+    return dates.reduce((acc, date) => {
+      if (!date.name.includes("/")) {
+        return acc;
+      }
+      return (
+        acc +
+        "\n" +
+        applySimpleMarkdown(date.name, "[", "]") +
+        applySimpleMarkdown(date.url, "(", ")")
+      );
+    }, nextDates);
+  } else {
+    return nextWeek;
+  }
 };
 
 module.exports = { initializeDom, searchNextDates };
