@@ -10,9 +10,12 @@ const listen = async () => {
     console.log("Next dates");
   });
 
-  bot.onText(/\/proximasfechas\s\w+$/, async (msg) =>
-    bot.sendMessage(msg.chat.id, searchNextDates(true))
-  );
+  bot.onText(/\/proximasfechas\s\w+$/, async (msg) => {
+    bot.sendMessage(msg.chat.id, searchNextDates(msg.text.substring(16)), {
+      parse_mode: "Markdown",
+    });
+    console.log("Next dates artist");
+  });
 
   await initializeDom();
 };

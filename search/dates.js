@@ -17,8 +17,8 @@ const initializeDom = async () => {
   ).body[1].section.links;
 };
 
-const searchNextDates = (nextWeek) => {
-  if (!nextWeek) {
+const searchNextDates = (artist) => {
+  if (!artist) {
     return dates.reduce((acc, date) => {
       if (!date.name.includes("/")) {
         return acc;
@@ -31,7 +31,11 @@ const searchNextDates = (nextWeek) => {
       );
     }, nextDates);
   } else {
-    return nextWeek;
+    const date = dates.find((date) => date.name.toLowerCase().includes(artist));
+    return date
+      ? applySimpleMarkdown(date.name, "[", "]") +
+          applySimpleMarkdown(date.url, "(", ")")
+      : "No hay fechas para este artista";
   }
 };
 
