@@ -21,7 +21,7 @@ const listen = async () => {
   });
 
   bot.onText(/\/precios\s\w+$/, async (msg) => {
-    bot.sendMessage(msg.chat.id, obtainPrices(msg.text.substring(9)), {
+    bot.sendMessage(msg.chat.id, await obtainPrices(msg.text.substring(9)), {
       parse_mode: "Markdown",
     });
     console.log(`Price ${msg.text.substring(9)}`);

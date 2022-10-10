@@ -1,10 +1,11 @@
-const { dates } = require("./initialState");
+const { getDates } = require("./initialState");
 const { hasArtist, getPrices } = require("../helper");
 
-const obtainPrices = (artist) => {
-  const date = hasArtist(dates, artist);
-  return date
-    ? artist + "\n" + getPrices(date.url)
+const obtainPrices = async (artist) => {
+  const date = hasArtist(getDates(), artist);
+  const prices = date ? await getPrices(date.url, artist) : "";
+  return prices !== ""
+    ? artist + "\n" + prices
     : "No hay fechas para este artista";
 };
 

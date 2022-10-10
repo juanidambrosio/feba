@@ -1,11 +1,11 @@
-const { nextDates, nextWeek } = require("../constants");
+const { nextDates, nextWeek, dates } = require("../constants");
 const { applySimpleMarkdown } = require("../parser");
 const { hasArtist } = require("../helper");
-const { dates } = require("./initialState");
+const { getDates } = require("./initialState");
 
 const searchNextDates = (artist) => {
   if (!artist) {
-    return dates.reduce((acc, date) => {
+    return getDates().reduce((acc, date) => {
       if (!date.name.includes("/")) {
         return acc;
       }
@@ -17,7 +17,7 @@ const searchNextDates = (artist) => {
       );
     }, nextDates);
   } else {
-    const date = hasArtist(dates, artist);
+    const date = hasArtist(getDates(), artist);
     return date
       ? applySimpleMarkdown(date.name, "[", "]") +
           applySimpleMarkdown(date.url, "(", ")")

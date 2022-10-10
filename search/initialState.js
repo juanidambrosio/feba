@@ -15,4 +15,6 @@ const initializeDom = async () => {
   ).body[1].section.links;
 };
 
-module.exports = { initializeDom };
+const getDates = () => dates;
+
+module.exports = { initializeDom, getDates };
