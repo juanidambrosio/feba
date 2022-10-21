@@ -1,4 +1,4 @@
-const { nextDates, nextWeek, dates } = require("../constants");
+const { nextDates } = require("../constants");
 const { applySimpleMarkdown } = require("../parser");
 const { hasArtist } = require("../helper");
 const { getDates } = require("./initialState");

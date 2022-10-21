@@ -27,6 +27,12 @@ const listen = async () => {
     console.log(`Price ${msg.text.substring(9)}`);
   });
 
+  bot.onText(/\/actualizar$/, async (msg) => {
+    await initializeDom();
+    bot.sendMessage(msg.chat.id, "Calendario actualizado!");
+    console.log("Actualizar");
+  });
+
   await initializeDom();
 };
 listen();
